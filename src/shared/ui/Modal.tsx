@@ -118,10 +118,10 @@ export const Modal = ({
 					event.stopPropagation()
 				}}
 			>
-				<header className="mb-4 border-b border-black-200 pb-4 text-center">
+				<header className="mb-4 border-b border-slate-200 pb-4 text-center">
 					<h2
 						id={titleId}
-						className="text-[1.75rem] font-semibold tracking-tight text-black-900"
+						className="type-modal-title"
 					>
 						{title}
 					</h2>
@@ -129,7 +129,7 @@ export const Modal = ({
 						type="button"
 						onClick={onClose}
 						aria-label={t('filter.close')}
-						className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full leading-none text-black-500 transition hover:bg-slate-100 hover:text-slate-700"
+						className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full leading-none text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
 					>
 						<span
 							aria-hidden="true"

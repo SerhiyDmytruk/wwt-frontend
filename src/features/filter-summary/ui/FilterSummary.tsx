@@ -10,7 +10,7 @@ export const FilterSummary = () => {
 	return (
 		<section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] md:p-8">
 			<header className="mb-4">
-				<h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+				<h2 className="type-section-title tracking-tight">
 					{t('filter.summaryTitle')}
 				</h2>
 				<p className="mt-2 text-sm leading-6 text-slate-600">

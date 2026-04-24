@@ -25,3 +25,17 @@ textarea,
 select {
 	font: inherit;
 }
+
+@layer components {
+	.type-modal-title {
+		@apply text-[40px] font-semibold tracking-tight text-slate-900;
+	}
+
+	.type-section-title {
+		@apply text-[24px] font-semibold text-slate-900;
+	}
+
+	.type-option-title {
+		@apply text-base font-medium text-slate-800;
+	}
+}

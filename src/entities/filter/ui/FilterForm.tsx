@@ -25,9 +25,7 @@ export const FilterForm = ({
 						key={filterItem.id}
 						className="border-b border-slate-200 pb-6 last:border-b-0 last:pb-0"
 					>
-						<legend className="text-base font-semibold text-slate-900">
-							{filterItem.name}
-						</legend>
+						<legend className="type-section-title">{filterItem.name}</legend>
 						{filterItem.description ? (
 							<p className="mt-2 text-sm leading-6 text-slate-500">
 								{filterItem.description}
@@ -51,7 +49,7 @@ export const FilterForm = ({
 											className="mt-1 h-4 w-4 rounded border-slate-300 text-orange-500 focus:ring-orange-500"
 										/>
 										<span className="space-y-1">
-											<span className="block text-sm font-medium text-slate-800">
+											<span className="type-option-title block">
 												{option.name}
 											</span>
 											{option.description ? (
