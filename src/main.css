@@ -1,2 +1,24 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
+@theme {
+	--color-accent-500: #f97316;
+}
+
+:root {
+	color: #0f172a;
+	background: #f3f6f7;
+	font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
