@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useQuery } from '@tanstack/react-query'
@@ -16,6 +16,7 @@ import { Button } from '@/shared/ui/Button'
 import { Modal } from '@/shared/ui/Modal'
 
 type DraftSelection = Record<string, string[]>
+type ModalStep = 'filters' | 'confirm' | null
 
 const createEmptyDraft = () => ({}) as DraftSelection
 
@@ -23,42 +24,35 @@ export const FilterModalFlow = () => {
 	const { t } = useTranslation()
 	const appliedFilters = useFilterStore(state => state.appliedFilters)
 	const setAppliedFilters = useFilterStore(state => state.setAppliedFilters)
-	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+	const [modalStep, setModalStep] = useState<ModalStep>(null)
 	const [draftSelection, setDraftSelection] =
 		useState<DraftSelection>(createEmptyDraft)
 
 	const { data, isLoading, isError } = useQuery({
 		queryKey: filterQueryKeys.all,
-		queryFn: getFilterItems
+		queryFn: getFilterItems,
+		staleTime: Number.POSITIVE_INFINITY
 	})
 
-	const filterItems = useMemo<FilterItem[]>(() => data ?? [], [data])
-
-	useEffect(() => {
-		if (!isModalOpen) {
-			return
-		}
-
-		setDraftSelection(createDraftFromSearchRequest(appliedFilters))
-	}, [appliedFilters, isModalOpen])
+	const filterItems: FilterItem[] = data ?? []
+	const isModalOpen = modalStep !== null
+	const isConfirmStep = modalStep === 'confirm'
 
 	const openModal = () => {
 		setDraftSelection(createDraftFromSearchRequest(appliedFilters))
-		setIsModalOpen(true)
+		setModalStep('filters')
 	}
 
 	const closeModal = () => {
-		setIsConfirmOpen(false)
-		setIsModalOpen(false)
+		setModalStep(null)
 	}
 
 	const openConfirmation = () => {
-		setIsConfirmOpen(true)
+		setModalStep('confirm')
 	}
 
-	const closeConfirmation = () => {
-		setIsConfirmOpen(false)
+	const returnToFilters = () => {
+		setModalStep('filters')
 	}
 
 	const handleDraftChange = (filterId: string, optionId: string) => {
@@ -92,68 +86,27 @@ export const FilterModalFlow = () => {
 		closeModal()
 	}
 
+	const handleModalClose = () => {
+		if (isConfirmStep) {
+			returnToFilters()
+
+			return
+		}
+
+		closeModal()
+	}
+
 	return (
 		<>
 			<Button onClick={openModal}>{t('filter.openButton')}</Button>
 
 			<Modal
 				isOpen={isModalOpen}
-				onClose={closeModal}
-				title={t('filter.modalTitle')}
-				className="max-h-[90dvh] max-w-5xl"
+				onClose={handleModalClose}
+				title={t(isConfirmStep ? 'filter.confirmTitle' : 'filter.modalTitle')}
+				className={isConfirmStep ? 'max-w-2xl' : 'max-h-[90dvh] max-w-5xl'}
 			>
-				<div className="flex min-h-[50dvh] flex-col">
-					<div className="flex-1 overflow-y-auto pr-1">
-						{isLoading ? (
-							<p className="py-16 text-center text-sm text-slate-500">
-								{t('filter.loading')}
-							</p>
-						) : null}
-
-						{isError ? (
-							<section className="rounded-3xl border border-rose-200 bg-rose-50 p-6 text-center">
-								<h2 className="text-lg font-semibold text-rose-700">
-									{t('filter.errorTitle')}
-								</h2>
-								<p className="mt-2 text-sm text-rose-600">
-									{t('filter.errorDescription')}
-								</p>
-							</section>
-						) : null}
-
-						{!isLoading && !isError ? (
-							<FilterForm
-								filterItems={filterItems}
-								draftSelection={draftSelection}
-								onToggleOption={handleDraftChange}
-							/>
-						) : null}
-					</div>
-
-					<footer className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
-						<button
-							type="button"
-							onClick={clearDraft}
-							className="text-sm font-medium text-cyan-700 transition hover:text-cyan-800"
-						>
-							{t('filter.clearAll')}
-						</button>
-
-						<Button
-							onClick={openConfirmation}
-							disabled={isLoading || isError}
-						>
-							{t('filter.apply')}
-						</Button>
-					</footer>
-				</div>
-
-				<Modal
-					isOpen={isConfirmOpen}
-					onClose={closeConfirmation}
-					title={t('filter.confirmTitle')}
-					className="max-w-2xl"
-				>
+				{isConfirmStep ? (
 					<div className="space-y-8 px-2 py-4 text-center">
 						<p className="text-lg text-slate-700">
 							{t('filter.confirmDescription')}
@@ -170,7 +123,53 @@ export const FilterModalFlow = () => {
 							</Button>
 						</div>
 					</div>
-				</Modal>
+				) : (
+					<div className="flex min-h-[50dvh] flex-col">
+						<div className="flex-1 overflow-y-auto pr-1">
+							{isLoading ? (
+								<p className="py-16 text-center text-sm text-slate-500">
+									{t('filter.loading')}
+								</p>
+							) : null}
+
+							{isError ? (
+								<section className="rounded-3xl border border-rose-200 bg-rose-50 p-6 text-center">
+									<h2 className="text-lg font-semibold text-rose-700">
+										{t('filter.errorTitle')}
+									</h2>
+									<p className="mt-2 text-sm text-rose-600">
+										{t('filter.errorDescription')}
+									</p>
+								</section>
+							) : null}
+
+							{!isLoading && !isError ? (
+								<FilterForm
+									filterItems={filterItems}
+									draftSelection={draftSelection}
+									onToggleOption={handleDraftChange}
+								/>
+							) : null}
+						</div>
+
+						<footer className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-center">
+							<Button
+								onClick={openConfirmation}
+								disabled={isLoading || isError}
+							>
+								{t('filter.apply')}
+							</Button>
+
+							<button
+								type="button"
+								onClick={clearDraft}
+								className="text-sm font-medium text-cyan-700 transition hover:text-cyan-800 absolute right-10"
+							>
+								{t('filter.clearAll')}
+							</button>
+						</footer>
+					</div>
+				)}
 			</Modal>
 		</>
 	)

@@ -1,14 +1,17 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@source '../index.html';
+@source './**/*.{ts,tsx}';
 
 @theme {
 	--color-accent-500: #f97316;
+	--font-sans: 'Inter', Helvetica, Arial, sans-serif;
 }
 
 :root {
 	color: #0f172a;
 	background: #f3f6f7;
-	font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: var(--font-sans);
 }
 
 body {
