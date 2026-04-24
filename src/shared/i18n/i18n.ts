@@ -7,7 +7,7 @@ import { resources } from './locales'
 
 i18n.use(initReactI18next).init({
 	resources: resources,
-	debug: true,
+	debug: false,
 	// Remove on connect language detector
 	lng: I18N_DEFAULT_LANGUAGE,
 	interpolation: {

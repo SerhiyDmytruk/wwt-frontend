@@ -3,15 +3,16 @@ import { createRoot } from 'react-dom/client'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 
+import { queryClient } from '@/query'
+
 import './main.css'
-import { App } from './pages/Home'
-import { queryClient } from './query'
+import { HomePage } from './pages/Home/ui/HomePage'
 import './shared/i18n'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<App />
+			<HomePage />
 		</QueryClientProvider>
 	</StrictMode>
 )

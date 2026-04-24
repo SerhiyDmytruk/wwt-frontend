@@ -1,1 +1,20 @@
-{}
+{
+	"pageEyebrow": "WinWinTravel task",
+	"pageTitle": "Hotel filters modal",
+	"pageDescription": "Open the filter modal, select amenities, and confirm whether the new state should replace the previously saved filters.",
+	"openButton": "Open filters",
+	"modalTitle": "Filter",
+	"loading": "Loading filters...",
+	"errorTitle": "Unable to load filters",
+	"errorDescription": "The filter data could not be loaded. Please try again.",
+	"apply": "Apply",
+	"clearAll": "Clear all parameters",
+	"summaryTitle": "Selected filter data",
+	"summaryDescription": "Current value of SearchRequestFilter stored in the global application state.",
+	"confirmTitle": "Do you want to apply new filter",
+	"confirmDescription": "",
+	"useOldFilter": "Use old filter",
+	"applyNewFilter": "Apply new filter",
+	"close": "Close modal",
+	"noDescription": "No additional description"
+}

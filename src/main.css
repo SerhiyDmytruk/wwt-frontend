@@ -1,2 +1,41 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@source '../index.html';
+@source './**/*.{ts,tsx}';
+
+@theme {
+	--color-accent-500: #f97316;
+	--font-sans: 'Inter', Helvetica, Arial, sans-serif;
+}
+
+:root {
+	color: #0f172a;
+	background: #f3f6f7;
+	font-family: var(--font-sans);
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
+
+@layer components {
+	.type-modal-title {
+		@apply text-[40px] font-semibold tracking-tight text-slate-900;
+	}
+
+	.type-section-title {
+		@apply text-[24px] font-semibold text-slate-900;
+	}
+
+	.type-option-title {
+		@apply text-base font-medium text-slate-800;
+	}
+}
