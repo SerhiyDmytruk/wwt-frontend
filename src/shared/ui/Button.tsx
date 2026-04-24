@@ -19,10 +19,10 @@ export const Button = ({
 		<button
 			type={type}
 			className={cn(
-				'inline-flex min-h-11 w-[184px] items-center justify-center rounded-xl border px-5 text-base font-semibold transition focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60',
+				'inline-flex min-h-16 w-[184px] items-center justify-center rounded-xl border px-5 text-base font-semibold transition focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60',
 				variant === 'primary'
 					? 'border-orange-500 bg-orange-500 text-white hover:border-orange-600 hover:bg-orange-600 '
-					: 'border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 w-[184px] absolute left-0 right-0 mx-auto',
+					: 'border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50',
 				className
 			)}
 			{...props}

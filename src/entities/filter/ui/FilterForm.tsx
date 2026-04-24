@@ -16,14 +16,14 @@ export const FilterForm = ({
 	const { t } = useTranslation()
 
 	return (
-		<form className="space-y-6">
+		<form className="space-y-6 pt-6 border-t-2 border-slate-200">
 			{filterItems.map(filterItem => {
 				const selectedOptions = draftSelection[filterItem.id] ?? []
 
 				return (
 					<fieldset
 						key={filterItem.id}
-						className="border-b border-slate-200 pb-6 last:border-b-0 last:pb-0"
+						className="border-b-2 border-slate-200 pb-6 last:border-b-0 last:pb-0"
 					>
 						<legend className="type-section-title">{filterItem.name}</legend>
 						{filterItem.description ? (

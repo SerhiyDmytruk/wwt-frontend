@@ -104,7 +104,7 @@ export const FilterModalFlow = () => {
 				isOpen={isModalOpen}
 				onClose={handleModalClose}
 				title={t(isConfirmStep ? 'filter.confirmTitle' : 'filter.modalTitle')}
-				className={isConfirmStep ? 'max-w-2xl' : 'max-h-[90dvh] max-w-5xl'}
+				className={isConfirmStep ? 'max-w-7xl' : 'max-h-[90dvh] max-w-7xl'}
 			>
 				{isConfirmStep ? (
 					<div className="space-y-8 px-2 py-4 text-center">
@@ -152,7 +152,7 @@ export const FilterModalFlow = () => {
 							) : null}
 						</div>
 
-						<footer className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-center">
+						<footer className="mt-6 flex flex-col-reverse gap-3 border-t-2 border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-center">
 							<Button
 								onClick={openConfirmation}
 								disabled={isLoading || isError}

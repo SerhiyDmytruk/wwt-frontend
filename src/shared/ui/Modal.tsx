@@ -99,7 +99,7 @@ export const Modal = ({
 				}}
 				onKeyDown={handleKeyDown}
 			>
-				<header className="mb-4 border-b border-slate-200 pb-4 text-center">
+				<header className="mb-4 pb-4 text-center">
 					<h2
 						id={titleId}
 						className="type-modal-title"
