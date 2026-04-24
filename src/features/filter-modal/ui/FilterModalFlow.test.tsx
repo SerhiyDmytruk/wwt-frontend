@@ -63,7 +63,7 @@ describe('FilterModalFlow', () => {
 		fireEvent.click(screen.getByRole('button', { name: 'Apply' }))
 
 		await screen.findByText('Do you want to apply new filter')
-		fireEvent.keyDown(window, { key: 'Escape' })
+		fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
 
 		await waitFor(() => {
 			expect(screen.queryByText('Do you want to apply new filter')).toBeNull()

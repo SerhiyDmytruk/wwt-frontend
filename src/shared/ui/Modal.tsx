@@ -1,4 +1,8 @@
-import { type PropsWithChildren, useEffect, useId, useRef } from 'react'
+import {
+	type PropsWithChildren,
+	type KeyboardEvent as ReactKeyboardEvent,
+	useId
+} from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -28,71 +32,40 @@ export const Modal = ({
 }: ModalProps) => {
 	const { t } = useTranslation()
 	const titleId = useId()
-	const dialogRef = useRef<HTMLElement | null>(null)
-	const previouslyFocusedElementRef = useRef<HTMLElement | null>(null)
-	const onCloseRef = useRef(onClose)
 
-	onCloseRef.current = onClose
+	const handleKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
+		if (event.key === 'Escape') {
+			onClose()
 
-	useEffect(() => {
-		if (!isOpen) {
 			return
 		}
 
-		previouslyFocusedElementRef.current =
-			document.activeElement instanceof HTMLElement
-				? document.activeElement
-				: null
-
-		const dialogElement = dialogRef.current
-		if (dialogElement) {
-			const [firstFocusableElement] = getFocusableElements(dialogElement)
-			;(firstFocusableElement ?? dialogElement).focus()
+		if (event.key !== 'Tab') {
+			return
 		}
 
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onCloseRef.current()
+		const dialogElement = event.currentTarget
+		const focusableElements = getFocusableElements(dialogElement)
+		if (focusableElements.length === 0) {
+			event.preventDefault()
+			dialogElement.focus()
 
-				return
-			}
-
-			if (event.key !== 'Tab' || !dialogElement) {
-				return
-			}
-
-			const focusableElements = getFocusableElements(dialogElement)
-			if (focusableElements.length === 0) {
-				event.preventDefault()
-				dialogElement.focus()
-
-				return
-			}
-
-			const firstFocusableElement = focusableElements[0]
-			const lastFocusableElement =
-				focusableElements[focusableElements.length - 1]
-
-			if (event.shiftKey && document.activeElement === firstFocusableElement) {
-				event.preventDefault()
-				lastFocusableElement.focus()
-			}
-
-			if (!event.shiftKey && document.activeElement === lastFocusableElement) {
-				event.preventDefault()
-				firstFocusableElement.focus()
-			}
+			return
 		}
 
-		document.body.style.overflow = 'hidden'
-		window.addEventListener('keydown', handleKeyDown)
+		const firstFocusableElement = focusableElements[0]
+		const lastFocusableElement = focusableElements[focusableElements.length - 1]
 
-		return () => {
-			document.body.style.overflow = ''
-			window.removeEventListener('keydown', handleKeyDown)
-			previouslyFocusedElementRef.current?.focus()
+		if (event.shiftKey && document.activeElement === firstFocusableElement) {
+			event.preventDefault()
+			lastFocusableElement.focus()
 		}
-	}, [isOpen])
+
+		if (!event.shiftKey && document.activeElement === lastFocusableElement) {
+			event.preventDefault()
+			firstFocusableElement.focus()
+		}
+	}
 
 	if (!isOpen) {
 		return null
@@ -105,7 +78,14 @@ export const Modal = ({
 			onClick={onClose}
 		>
 			<section
-				ref={dialogRef}
+				ref={dialogElement => {
+					if (!dialogElement) {
+						return
+					}
+
+					const [firstFocusableElement] = getFocusableElements(dialogElement)
+					;(firstFocusableElement ?? dialogElement).focus()
+				}}
 				role="dialog"
 				aria-modal="true"
 				aria-labelledby={titleId}
@@ -117,6 +97,7 @@ export const Modal = ({
 				onClick={event => {
 					event.stopPropagation()
 				}}
+				onKeyDown={handleKeyDown}
 			>
 				<header className="mb-4 border-b border-slate-200 pb-4 text-center">
 					<h2
