@@ -3,7 +3,8 @@ import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 import { cn } from '@/shared/lib/cn'
 
 interface ButtonProps
-	extends PropsWithChildren, ButtonHTMLAttributes<HTMLButtonElement> {
+	extends PropsWithChildren,
+		ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: 'primary' | 'secondary'
 }
 
